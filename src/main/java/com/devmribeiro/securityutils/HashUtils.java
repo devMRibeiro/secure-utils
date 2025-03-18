@@ -6,10 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class HashUtils {
-	public static String sha256(String input) {
-		return hash(input, "sha-256");
-	}
-
 	private static String hash(String input, String algorithm) {
 		try {
 
@@ -21,5 +17,13 @@ public class HashUtils {
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}	
+	}
+
+	public static String sha256(String input) {
+		return hash(input, "sha-256");
+	}
+
+	public static String sha512(String input) {
+		return hash(input, "sha-512");
 	}
 }
