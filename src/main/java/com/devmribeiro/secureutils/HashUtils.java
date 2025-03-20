@@ -58,6 +58,14 @@ public class HashUtils {
     return salt;
 	}
 
+	/**
+	 * <p>Generates a hash with a specific algorithm and random salt.</p>
+	 * 
+	 * @param content Content to be hashed.
+	 * @param salt Salt to add randomness.
+	 * @param algorithm Hash algorithm(SHA-256, SHA-512).
+	 * @return Hash with Salt concatenated and encoded in Base64.
+	 */
 	private static String hashSalt(String content, byte[] salt, String algorithm) {
 		try {
 			MessageDigest md = MessageDigest.getInstance(algorithm);
@@ -72,10 +80,20 @@ public class HashUtils {
 		}
 	}
 
+	/**
+	 * @param content Content to be hashed.
+	 * @param salt Salt to add randomness.
+	 * @return Base64 encoded SHA-256 hash with salt.
+	 */
 	public static String sha256Salt(String content, byte[] salt) {
 		return hashSalt(content, salt, "SHA-256"); 
 	}
 
+	/**
+	 * @param content Content to be hashed.
+	 * @param salt Salt to add randomness.
+	 * @return Base64 encoded SHA-512 hash with salt.
+	 */
 	public static String sha512Salt(String content, byte[] salt) {
 		return hashSalt(content, salt, "SHA-512"); 
 	}
