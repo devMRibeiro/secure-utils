@@ -6,6 +6,34 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+/**
+ * <p>
+ * Utility class providing cryptographic hashing functionalities, including SHA-256 and SHA-512
+ * algorithms with optional salting for enhanced security. This class simplifies the process
+ * of generating secure hashes.
+ * </p>
+ * 
+ * <p>
+ * It is particularly useful for integrity verification of data.
+ * </p>
+ * 
+ * <p>
+ * Features:
+ * <ul>
+ *   <li>Generate SHA-256 and SHA-512 hashes.</li>
+ *   <li>Support for random salt generation to increase hash uniqueness.</li>
+ *   <li>Ability to validate a content against a given hash.</li>
+ *   <li>Utilizes Base64 encoding for better storage and transmission.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p><strong>Note:</strong> This class is designed for general-purpose hashing and should not be used 
+ * as a replacement for more advanced password-hashing algorithms like BCrypt or Argon2 for authentication.</p>
+ * 
+ * @author Michael D. Ribeiro
+ * @version 1.0 (March 2025)
+ * @since 1.0
+ */
 public class HashUtils {
 
 	private static final SecureRandom RANDOM = new SecureRandom();
