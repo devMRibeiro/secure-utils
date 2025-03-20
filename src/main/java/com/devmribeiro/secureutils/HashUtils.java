@@ -48,4 +48,18 @@ public class HashUtils {
 				throw new RuntimeException("Error when generating hash with salt " + e.getMessage(), e);
 		}
 	}
+
+	private static byte[] getSalt() {
+    byte[] salt = new byte[16];
+    RANDOM.nextBytes(salt);
+    return salt;
+	}
+
+	public static String sha256Salt(String input) {
+		return hashSalt(input, getSalt(), "SHA-256"); 
+	}
+
+	public static String sha512Salt(String input) {
+		return hashSalt(input, getSalt(), "SHA-512"); 
+	}
 }
