@@ -1,9 +1,8 @@
 package com.devmribeiro.secureutils;
 
-import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Base64;
 
 /**
@@ -36,8 +35,6 @@ import java.util.Base64;
  */
 public class HashUtils {
 
-	private static final SecureRandom RANDOM = new SecureRandom();
-
 	/**
 	 * <p>Generates a hash with a specific algorithm.</p>
 	 * 
@@ -50,9 +47,9 @@ public class HashUtils {
 	private static String hash(String content, String algorithm) {
 		try {
 			MessageDigest md = MessageDigest.getInstance(algorithm);
-			byte[] hashBytes = md.digest(content.getBytes(StandardCharsets.UTF_8));
+			byte[] hashBytes = md.digest(content.getBytes(SecureUtils.DEFAULT_CHARSET));
 			return Base64.getEncoder().encodeToString(hashBytes);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			throw new RuntimeException("HashUtils: error when generating hash " + e.getMessage(), e);
 		}	
 	}
@@ -78,15 +75,6 @@ public class HashUtils {
 	}
 
 	/**
-	 * @return Random byte array of size 16.
-	 */
-	public static byte[] getSalt() {
-		byte[] salt = new byte[16];
-    RANDOM.nextBytes(salt);
-    return salt;
-	}
-
-	/**
 	 * <p>Generates a hash with a specific algorithm and random salt.</p>
 	 * 
 	 * @param content Content to be hashed.
@@ -98,12 +86,12 @@ public class HashUtils {
 		try {
 			MessageDigest md = MessageDigest.getInstance(algorithm);
 			md.update(salt);
-			byte[] bytes = md.digest(content.getBytes(StandardCharsets.UTF_8));
+			byte[] bytes = md.digest(content.getBytes(SecureUtils.DEFAULT_CHARSET));
 			byte[] hashSalt = new byte[bytes.length + salt.length];
 			System.arraycopy(salt, 0, hashSalt, 0, salt.length);
       System.arraycopy(bytes, 0, hashSalt, salt.length, bytes.length);
       return Base64.getEncoder().encodeToString(hashSalt);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 				throw new RuntimeException("HashUtils: error when generating hash with salt " + e.getMessage(), e);
 		}
 	}
