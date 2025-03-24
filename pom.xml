@@ -5,4 +5,13 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Secure Utils</name>
   <description>To facilitate security operations.</description>
+  
+  <dependencies>
+	<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+	<dependency>
+	    <groupId>org.bouncycastle</groupId>
+	    <artifactId>bcprov-jdk18on</artifactId>
+	    <version>1.80</version>
+	</dependency>
+  </dependencies>
 </project>
