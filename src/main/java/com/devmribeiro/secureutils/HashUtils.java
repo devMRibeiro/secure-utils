@@ -1,6 +1,6 @@
 package com.devmribeiro.secureutils;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -47,9 +47,9 @@ public class HashUtils {
 	private static String hash(String content, String algorithm) {
 		try {
 			MessageDigest md = MessageDigest.getInstance(algorithm);
-			byte[] hashBytes = md.digest(content.getBytes(SecureUtils.DEFAULT_CHARSET));
+			byte[] hashBytes = md.digest(content.getBytes(StandardCharsets.UTF_8));
 			return Base64.getEncoder().encodeToString(hashBytes);
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException("HashUtils: error when generating hash " + e.getMessage(), e);
 		}	
 	}
@@ -86,12 +86,12 @@ public class HashUtils {
 		try {
 			MessageDigest md = MessageDigest.getInstance(algorithm);
 			md.update(salt);
-			byte[] bytes = md.digest(content.getBytes(SecureUtils.DEFAULT_CHARSET));
+			byte[] bytes = md.digest(content.getBytes(StandardCharsets.UTF_8));
 			byte[] hashSalt = new byte[bytes.length + salt.length];
 			System.arraycopy(salt, 0, hashSalt, 0, salt.length);
       System.arraycopy(bytes, 0, hashSalt, salt.length, bytes.length);
       return Base64.getEncoder().encodeToString(hashSalt);
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+		} catch (NoSuchAlgorithmException e) {
 				throw new RuntimeException("HashUtils: error when generating hash with salt " + e.getMessage(), e);
 		}
 	}
