@@ -25,13 +25,16 @@ public class PasswordUtils {
 		return result;
 	}
 
-	public static byte[] hashPassword(String password, byte[] salt) {
-		Argon2Parameters.Builder builder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
+	private static Argon2Parameters.Builder builder(String password, byte[] salt) {
+		return new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
 				.withVersion(Argon2Parameters.ARGON2_VERSION_13)
 				.withIterations(ITERATIONS_LIMIT)
 				.withMemoryAsKB(MEMOMRY_LIMIT)
 				.withParallelism(PARALLELISM)
 				.withSalt(salt);
-		return generator(builder, OUTPUT_LENGTH, password);
+	}
+
+	public static String hashPassword(String password, byte[] salt) {
+		return SecureUtils.base64Enconder(generator(builder(password, salt), OUTPUT_LENGTH, password));
 	}
 }
