@@ -37,4 +37,8 @@ public class PasswordUtils {
 	public static String hashPassword(String password, byte[] salt) {
 		return SecureUtils.base64Enconder(generator(builder(password, salt), OUTPUT_LENGTH, password));
 	}
+
+	public static boolean validate(String inputPassword, String storedHash, byte[] salt) {
+		return hashPassword(inputPassword, salt).equals(storedHash);
+	}
 }
