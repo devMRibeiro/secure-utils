@@ -6,6 +6,7 @@ import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 
 /**
+ * 
  * Utility class for hashing and validating passwords using the Argon2 algorithm.
  * This class provides methods to generate secure password hashes and validate them.
  * 
@@ -25,7 +26,7 @@ import org.bouncycastle.crypto.params.Argon2Parameters;
  * </p>
  * 
  * @author Michael D. Ribeiro
- * @version 1.2 (March 2025)
+ * @version 1.3 (March 2025)
  * @since 1.1
  */
 public class PasswordUtils {
@@ -91,4 +92,54 @@ public class PasswordUtils {
 	public static boolean validate(String inputPassword, String storedHash, byte[] salt) {
 		return hashPassword(inputPassword, salt).equals(storedHash);
 	}
+	
+	private static char[] SYMBOLS = "^$*.[]{}()?-\"!@#%&/\\,><':;|_~`".toCharArray();
+	private static char[] LOWERCASE = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+	private static char[] UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+	private static char[] NUMBERS = "0123456789".toCharArray();
+	private static char[] ALL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789^$*.[]{}()?-\"!@#%&/\\,><':;|_~`".toCharArray();
+
+	 /**
+   * Generates a random password based on specific complexity requirements.
+   * The generated password will contain at least one lowercase character, one uppercase character,
+   * one number, and one special symbol, ensuring that these types of characters are included.
+   * The remaining characters will be filled randomly from a broader set of characters.
+   *
+   * <p>The generated password is shuffled to ensure that the characters do not follow a predictable order.</p>
+   * 
+   * @param length The desired length of the password. It must be an integer greater than or equal to 4.
+   *         If the length is less than 4, an {@link IllegalArgumentException} will be thrown.
+   * 
+   * @return The generated password as a {@link String}.
+   * 
+   * @throws IllegalArgumentException If the length of the password is less than 4.
+   * 
+   * @since 1.3
+   */
+  public static String getPassword(int length) {
+
+  	if (length < 4)
+  		throw new IllegalArgumentException("Length must be greater than or equals to 4");
+      
+  	char[] password = new char[length];
+
+    // get the requirements out of the way
+    password[0] = LOWERCASE[SecureUtils.RANDOM.nextInt(LOWERCASE.length)];
+    password[1] = UPPERCASE[SecureUtils.RANDOM.nextInt(UPPERCASE.length)];
+    password[2] = NUMBERS[SecureUtils.RANDOM.nextInt(NUMBERS.length)];
+    password[3] = SYMBOLS[SecureUtils.RANDOM.nextInt(SYMBOLS.length)];
+
+    // populate rest of the password with random chars
+    for (int i = 4; i < length; i++)
+    	password[i] = ALL_CHARS[SecureUtils.RANDOM.nextInt(ALL_CHARS.length)];
+
+    // shuffle it up
+    for (int i = 0; i < password.length; i++) {
+        int randomPosition = SecureUtils.RANDOM.nextInt(password.length);
+        char temp = password[i];
+        password[i] = password[randomPosition];
+        password[randomPosition] = temp;
+    }
+    return new String(password);
+  }
 }
