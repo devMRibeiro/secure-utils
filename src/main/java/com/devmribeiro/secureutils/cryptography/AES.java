@@ -12,12 +12,12 @@ import com.devmribeiro.secureutils.interfaces.Encryptable;
 public class AES implements Encryptable {
 
 	private static final String AES_ALGORITHM = "AES";
-	private static final int KEY_SIZE = 2048;
+	private static final int KEY_SIZE = 128;
 	
 	private SecretKey key;
 	
 	// Constructor to initialize the encryption key
-	AES() {
+	public AES() {
 		try {
 			KeyGenerator keyGen = KeyGenerator.getInstance(AES_ALGORITHM);
 			keyGen.init(KEY_SIZE);
@@ -43,7 +43,7 @@ public class AES implements Encryptable {
 	@Override
 	public String decrypt(String encryptData) {
 		try {
-			byte[] encryptedBytes = SecureUtils.base64Decoder(null);
+			byte[] encryptedBytes = SecureUtils.base64Decoder(encryptData.getBytes());
 			Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, key);
 			return new String (cipher.doFinal(encryptedBytes));
