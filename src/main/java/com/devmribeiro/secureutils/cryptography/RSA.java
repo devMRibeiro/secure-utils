@@ -17,7 +17,7 @@ public class RSA implements Encryptable {
 
 	private KeyPair keyPair;
 
-	RSA() {
+	public RSA() {
 		try {
 			KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(RSA_ALGORITHM);
 			keyPairGen.initialize(KEY_SIZE);
