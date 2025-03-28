@@ -1,4 +1,4 @@
-package com.devmribeiro.secureutils;
+package com.devmribeiro.secureutils.hash;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

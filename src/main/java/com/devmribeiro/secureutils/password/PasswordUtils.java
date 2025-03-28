@@ -1,9 +1,11 @@
-package com.devmribeiro.secureutils;
+package com.devmribeiro.secureutils.password;
 
 import java.nio.charset.StandardCharsets;
 
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
+
+import com.devmribeiro.secureutils.SecureUtils;
 
 /**
  * 

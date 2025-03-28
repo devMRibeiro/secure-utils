@@ -21,7 +21,7 @@ import java.util.Base64;
  */
 public abstract class SecureUtils {
 
-	protected static final SecureRandom RANDOM = new SecureRandom();
+	public static final SecureRandom RANDOM = new SecureRandom();
 
 	/**
 	 * Generates a random salt of the specified size.
