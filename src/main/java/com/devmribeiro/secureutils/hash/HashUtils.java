@@ -31,7 +31,7 @@ import com.devmribeiro.secureutils.SecureUtils;
  * as a replacement for more advanced password-hashing algorithms like BCrypt or Argon2 for authentication.</p>
  * 
  * @author Michael D. Ribeiro
- * @version 1.0 (March 2025)
+ * @version 1.1 (March 2025)
  * @since 1.0
  */
 public class HashUtils {
