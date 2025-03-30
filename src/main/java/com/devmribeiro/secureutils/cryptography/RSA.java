@@ -55,7 +55,6 @@ public class RSA implements Encryptable {
    */
 	@Override
 	public String encrypt(String data) {
-		
 		try {
 			PublicKey publicKey = keyPair.getPublic();
 			Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
