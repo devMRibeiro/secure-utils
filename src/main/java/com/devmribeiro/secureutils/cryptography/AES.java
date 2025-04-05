@@ -57,7 +57,6 @@ public class AES implements Encryptable {
 	 * @param data The plaintext data to be encrypted
 	 * @return The encrypted data as a Base64 encoded string
 	 */
-	@Override
 	public String encrypt(String data) {
 		try {
 			Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
@@ -76,7 +75,6 @@ public class AES implements Encryptable {
 	 * @param encryptData The encrypted data as a Base64 encoded string
 	 * @return The decrypted plaintext data
 	 */
-	@Override
 	public String decrypt(String encryptData) {
 		try {
 			byte[] encryptedBytes = SecureUtils.base64Decoder(encryptData.getBytes());

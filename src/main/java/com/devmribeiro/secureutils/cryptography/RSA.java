@@ -51,7 +51,6 @@ public class RSA implements Encryptable {
 	 * @param data The plaintext data to be encrypted
 	 * @return The encrypted data as a Base64 encoded string
 	 */
-	@Override
 	public String encrypt(String data) {
 		try {
 			PublicKey publicKey = keyPair.getPublic();
@@ -72,7 +71,6 @@ public class RSA implements Encryptable {
 	 * @param encryptData The encrypted data as a Base64 encoded string
 	 * @return The decrypted plaintext data
 	 */
-	@Override
 	public String decrypt(String encryptData) {
 		try {
 			PrivateKey privateKey = keyPair.getPrivate();
