@@ -17,7 +17,6 @@ import java.util.Base64;
 public class SecureUtils {
 
 	public static final SecureRandom RANDOM = new SecureRandom();
-	public static final String AES_ALGORITHM = "AES";
 	public static final String RSA_ALGORITHM = "RSA";
 
 	/**
@@ -37,7 +36,6 @@ public class SecureUtils {
 	 *
 	 * @param input The byte array to be encoded in Base64.
 	 * @return A string containing the Base64-encoded representation of the input byte array.
-	 * @since 1.1
 	 */
 	public static String base64Enconder(byte[] input) {
 		return Base64.getEncoder().encodeToString(input);
@@ -48,7 +46,6 @@ public class SecureUtils {
 	 * 
 	 * @param input The byte array encoded in Base64.
 	 * @return A byte array containing the decoded data.
-	 * @since 1.1
 	 */
 	public static byte[] base64Decoder(byte[] base64Encoded) {
 		return Base64.getDecoder().decode(base64Encoded);
