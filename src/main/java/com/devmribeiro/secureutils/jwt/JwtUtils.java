@@ -10,40 +10,52 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.devmribeiro.secureutils.SecureUtils;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 /**
  * @author Michael D. Ribeiro
  * @since 1.4
  */
-public class JWT {
-	int accessExpirationMs = 9600000;
-    public String generateAccessToken(String userName, List<String> roleArray, String jwtPrivateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+public class JwtUtils {
+	Logger log = LoggerFactory.getLogger(JwtUtils.class);
+
+    /**
+     * @param username
+     * @param rolesList
+     * @param jwtPrivateKey
+     * @param accessExpirationMs
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
+    public String generateAccessToken(String username, List<String> rolesList, String jwtPrivateKey, int accessExpirationMs) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return Jwts
         		.builder()
-                .setSubject(userName)
-                .claim("roles", roleArray)
+                .setSubject(username)
+                .claim("roles", rolesList)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + accessExpirationMs))
-                .signWith(generateJwtKeyDecryption(jwtPrivateKey), SignatureAlgorithm.RS256)
+                .signWith(generateJwtKeyEncryption(jwtPrivateKey))
                 .compact();
     }
 
     public PublicKey generateJwtKeyDecryption(String jwtPublicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        return KeyFactory
-        		.getInstance("RSA")
-        		.generatePublic(new X509EncodedKeySpec(SecureUtils.base64Decoder(jwtPublicKey.getBytes())));
+    	return KeyFactory
+    			.getInstance(SecureUtils.RSA_ALGORITHM)
+    			.generatePublic(new X509EncodedKeySpec(SecureUtils.base64Decoder(jwtPublicKey.getBytes())));
     }
 
     public PrivateKey generateJwtKeyEncryption(String jwtPrivateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return KeyFactory
-        		.getInstance("RSA")
+        		.getInstance(SecureUtils.RSA_ALGORITHM)
         		.generatePrivate(new PKCS8EncodedKeySpec(SecureUtils.base64Decoder(jwtPrivateKey.getBytes())));
     }
 
@@ -51,23 +63,22 @@ public class JWT {
         try {
         	Jwts
         	.parserBuilder()
-        	.setSigningKey(generateJwtKeyEncryption(jwtPublicKey))
+        	.setSigningKey(generateJwtKeyDecryption(jwtPublicKey))
         	.build()
-        	.parseClaimsJws(authToken);
+        	.parse(authToken);
         	return true;
-
         } catch (MalformedJwtException e) {
-            System.out.println("Invalid JWT token: {}"+ e.getMessage());
+        	log.error("Invalid JWT token: {}",  e.getMessage());
         } catch (ExpiredJwtException e) {
-            System.out.println("JWT token is expired: {}"+ e.getMessage());
+            log.error("JWT token is expired: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            System.out.println("JWT token is unsupported: {}"+ e.getMessage());
+            log.error("JWT token is unsupported: {}",  e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.out.println("JWT claims string is empty: {}"+ e.getMessage());
+            log.error("JWT claims string is empty: {}", e.getMessage());
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("no such algorithm exception");
+            log.error("no such algorithm exception");
         } catch (InvalidKeySpecException e) {
-            System.out.println("invalid key exception");
+            log.error("invalid key exception");
         }
         return false;
     }
