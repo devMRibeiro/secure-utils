@@ -24,7 +24,7 @@ import com.devmribeiro.secureutils.interfaces.Encryptable;
  * @author Michael D. Ribeiro
  * @since 1.3
  */
-public class RSA implements Encryptable {
+public class RsaUtils implements Encryptable {
 
 	private static final int KEY_SIZE = 2048;
 	private static KeyPair KEY_PAIR;
@@ -33,7 +33,7 @@ public class RSA implements Encryptable {
 	 * Constructor that initializes the key pair using the RSA algorithm.
 	 * The key pair is generated using the {@link KeyPairGenerator} class with the specified {@link #KEY_SIZE}. 
 	 */
-	public RSA() {
+	public RsaUtils() {
 		try {
 			KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(SecureUtils.RSA_ALGORITHM);
 			keyPairGen.initialize(KEY_SIZE);
