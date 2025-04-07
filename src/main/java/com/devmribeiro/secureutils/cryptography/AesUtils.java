@@ -28,19 +28,19 @@ import com.devmribeiro.secureutils.interfaces.Encryptable;
  * @author Michael D. Ribeiro
  * @since 1.3
  */
-public class AES implements Encryptable {
+public class AesUtils implements Encryptable {
 
-	private static final String AES_ALGORITHM = "AES";
+	public static final String AES_ALGORITHM = "AES";
 	private static final int KEY_SIZE = 128;
-	
+
 	private SecretKey key;
-	
+
 	/**
 	 * Constructor that initializes the encryption key using the AES algorithm.
 	 * The key is generated using the {@link KeyGenerator}
 	 * class with the specified {@link #KEY_SIZE}. 
 	 */
-	public AES() {
+	public AesUtils() {
 		try {
 			KeyGenerator keyGen = KeyGenerator.getInstance(AES_ALGORITHM);
 			keyGen.init(KEY_SIZE);
