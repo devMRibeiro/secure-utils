@@ -26,9 +26,8 @@ import com.devmribeiro.secureutils.interfaces.Encryptable;
  */
 public class RSA implements Encryptable {
 
-	private static final String RSA_ALGORITHM = "RSA";
 	private static final int KEY_SIZE = 2048;
-	private KeyPair keyPair;
+	private static KeyPair KEY_PAIR;
 
 	/**
 	 * Constructor that initializes the key pair using the RSA algorithm.
@@ -36,9 +35,9 @@ public class RSA implements Encryptable {
 	 */
 	public RSA() {
 		try {
-			KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(RSA_ALGORITHM);
+			KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(SecureUtils.RSA_ALGORITHM);
 			keyPairGen.initialize(KEY_SIZE);
-			keyPair = keyPairGen.generateKeyPair();
+			KEY_PAIR = keyPairGen.generateKeyPair();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,8 +52,8 @@ public class RSA implements Encryptable {
 	 */
 	public String encrypt(String data) {
 		try {
-			PublicKey publicKey = keyPair.getPublic();
-			Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
+			PublicKey publicKey = KEY_PAIR.getPublic();
+			Cipher cipher = Cipher.getInstance(SecureUtils.RSA_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			byte[] encryptedBytes = cipher.doFinal(data.getBytes());
 			return SecureUtils.base64Enconder(encryptedBytes);
@@ -73,9 +72,9 @@ public class RSA implements Encryptable {
 	 */
 	public String decrypt(String encryptData) {
 		try {
-			PrivateKey privateKey = keyPair.getPrivate();
+			PrivateKey privateKey = KEY_PAIR.getPrivate();
 			byte[] encryptedBytes = SecureUtils.base64Decoder(encryptData.getBytes());
-			Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
+			Cipher cipher = Cipher.getInstance(SecureUtils.RSA_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
 			return new String(decryptedBytes);
@@ -83,5 +82,23 @@ public class RSA implements Encryptable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns a reference to the public key component of this key pair.
+	 * 
+	 * @return a reference to the public key.
+	 */
+	public String getPublicKey() {
+		return SecureUtils.base64Enconder(KEY_PAIR.getPublic().getEncoded());
+	}
+
+	/**
+	 * Returns a reference to the private key component of this key pair.
+	 *
+	 * @return a reference to the private key.
+	 */
+	public String getPrivateKey() {
+		return SecureUtils.base64Enconder(KEY_PAIR.getPrivate().getEncoded());
 	}
 }
