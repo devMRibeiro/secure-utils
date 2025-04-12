@@ -90,8 +90,8 @@ public class HashUtils {
 			byte[] bytes = md.digest(content.getBytes(StandardCharsets.UTF_8));
 			byte[] hashSalt = new byte[bytes.length + salt.length];
 			System.arraycopy(salt, 0, hashSalt, 0, salt.length);
-      System.arraycopy(bytes, 0, hashSalt, salt.length, bytes.length);
-      return SecureUtils.base64Enconder(hashSalt);
+			System.arraycopy(bytes, 0, hashSalt, salt.length, bytes.length);
+			return SecureUtils.base64Enconder(hashSalt);
 		} catch (NoSuchAlgorithmException e) {
 				throw new RuntimeException("HashUtils: error when generating hash with salt " + e.getMessage(), e);
 		}
